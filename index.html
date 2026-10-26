@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Couch Flix | Stream Free</title>
+    <style>
+        /* Base Setup */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #141414; color: #ffffff; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; overflow-x: hidden; }
+        
+        /* Navbar */
+        .navbar { background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%); position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px 4%; z-index: 10; }
+        .logo { color: #E50914; font-size: 28px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; }
+
+        /* Hero Banner */
+        .hero { height: 70vh; background: linear-gradient(to right, rgba(0,0,0,0.8) 30%, rgba(0,0,0,0.2) 100%), url('https://unsplash.com') no-repeat center center/cover; display: flex; flex-direction: column; justify-content: center; padding-left: 4%; }
+        .hero-title { font-size: 3.5rem; margin-bottom: 10px; max-width: 600px; }
+        .hero-desc { font-size: 1.2rem; max-width: 500px; margin-bottom: 20px; color: #cccccc; }
+        .play-btn { background-color: #ffffff; color: #000000; border: none; padding: 12px 28px; font-size: 1.1rem; font-weight: bold; border-radius: 4px; cursor: pointer; transition: 0.2s; display: inline-block; width: max-content; text-decoration: none; }
+        .play-btn:hover { background-color: rgba(255,255,255,0.75); }
+
+        /* Movie Rows */
+        .row-container { padding: 30px 4% 0 4%; position: relative; margin-top: -50px; }
+        .row-title { font-size: 1.4rem; font-weight: bold; margin-bottom: 10px; }
+        .movie-row { display: flex; gap: 10px; overflow-x: scroll; padding: 15px 0; scroll-behavior: smooth; }
+        .movie-row::-webkit-scrollbar { display: none; } /* Hide scrollbar for a clean look */
+        
+        /* Thumbnails */
+        .thumbnail { min-width: 240px; height: 135px; background-color: #2f2f2f; border-radius: 4px; overflow: hidden; cursor: pointer; transition: transform 0.3s ease; position: relative; }
+        .thumbnail:hover { transform: scale(1.08); z-index: 5; }
+        .thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+        .thumbnail-title { position: absolute; bottom: 10px; left: 10px; font-size: 0.9rem; font-weight: bold; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); }
+
+        /* Video Popup Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; }
+        .modal-content { width: 80%; max-width: 800px; aspect-ratio: 16/9; background: #000; position: relative; border-radius: 8px; overflow: hidden; }
+        .modal-content iframe { width: 100%; height: 100%; border: none; }
+        .close-btn { position: absolute; top: -40px; right: 0; color: #fff; font-size: 30px; cursor: pointer; background: none; border: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation -->
+    <nav class="navbar">
+        <div class="logo">Couch Flix</div>
+    </nav>
+
+    <!-- Featured Spotlight Section -->
+    <header class="hero">
+        <h1 class="hero-title">Featured Movie Title</h1>
+        <p class="hero-desc">Add a catchy, custom description here explaining your main spotlight video or showcase film.</p>
+        <button class="play-btn" onclick="openPlayer('dQw4w9WgXcQ')">▶ Play</button>
+    </header>
+
+    <!-- Streaming Dashboard Grid -->
+    <main class="row-container">
+        <h2 class="row-title">Trending Now</h2>
+        <div class="movie-row">
+            <!-- Movie Card 1 -->
+            <div class="thumbnail" onclick="openPlayer('dQw4w9WgXcQ')">
+                <img src="https://unsplash.com" alt="Movie Thumbnail">
+                <div class="thumbnail-title">Blockbuster Film 1</div>
+            </div>
+            <!-- Movie Card 2 -->
+            <div class="thumbnail" onclick="openPlayer('dQw4w9WgXcQ')">
+                <img src="https://unsplash.com" alt="Movie Thumbnail">
+                <div class="thumbnail-title">Blockbuster Film 2</div>
+            </div>
+            <!-- Movie Card 3 -->
+            <div class="thumbnail" onclick="openPlayer('dQw4w9WgXcQ')">
+                <img src="https://unsplash.com" alt="Movie Thumbnail">
+                <div class="thumbnail-title">Blockbuster Film 3</div>
+            </div>
+            <!-- Movie Card 4 -->
+            <div class="thumbnail" onclick="openPlayer('dQw4w9WgXcQ')">
+                <img src="https://unsplash.com" alt="Movie Thumbnail">
+                <div class="thumbnail-title">Blockbuster Film 4</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Seamless Embedded Pop-up Video Player Box -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closePlayer()">&times;</button>
+            <iframe id="videoPlayer" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- Interface Functionality Controls -->
+    <script>
+        const modal = document.getElementById('videoModal');
+        const player = document.getElementById('videoPlayer');
+
+        function openPlayer(youtubeId) {
+            // Generates an interactive playback link using standard YouTube formatting
+            player.src = `https://youtube.com{youtubeId}?autoplay=1`;
+            modal.style.display = 'flex';
+        }
+
+        function closePlayer() {
+            modal.style.display = 'none';
+            player.src = ''; // Instantly halts background video playback upon exit
+        }
+
+        // Safe closure if a user happens to click outside the boundary box
+        window.onclick = function(event) {
+            if (event.target == modal) { closePlayer(); }
+        }
+    </script>
+</body>
+</html>
